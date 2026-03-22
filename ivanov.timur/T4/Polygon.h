@@ -12,7 +12,7 @@ private:
   point_t coca_cola;
 
 public:
-  Polygon(std::vector<point_t> ptl):
+  Polygon(const std::vector<point_t>& ptl):
     pts(ptl), coca_cola(point_t(0, 0)) {
     for (size_t i = 0; i < pts.size(); ++i) {
       coca_cola.x += pts[i].x;
@@ -57,8 +57,9 @@ public:
     move(new_point.x - coca_cola.x, new_point.y - coca_cola.y);
   }
 
-  void scale(const double &k) override {
+  void scale(const point_t& p, const double& k) override {
     if (k <= 0) throw std::logic_error("Cannot scale by negative");
+    move(p);
 
     for (size_t i = 0; i < pts.size(); ++i) {
       pts[i].x += ((k - 1)/std::sqrt(2))*(pts[i].x - coca_cola.x);

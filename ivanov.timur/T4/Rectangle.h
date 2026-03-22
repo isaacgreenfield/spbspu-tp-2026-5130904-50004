@@ -32,8 +32,9 @@ public:
     move(new_point.x - pos.x, new_point.y - pos.y);
   }
 
-  void scale(const double& k) override {
+  void scale(const point_t& p, const double& k) override {
     if (k <= 0) throw std::logic_error("Cannot scale by negative");
+    move(p);
     r.width *= k;
     r.height *= k;
     r.pos = point_t(r.pos.x - r.width/2, r.pos.y - r.height/2);

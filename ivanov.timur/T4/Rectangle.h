@@ -22,15 +22,16 @@ public:
     return r;
   }
 
-  void move(double delta_x, double delta_y) override {
+  void move(const double& delta_x, const double& delta_y) override {
     pos = point_t(pos.x + delta_x, pos.y + delta_y);
+    r.pos = point_t(pos.x - r.width/2, pos.y - r.height/2);
   }
 
-  void move(point_t new_point) override {
-    pos = new_point;
+  void move(const point_t& new_point) override {
+    move(new_point.x - pos.x, new_point.y - pos.y);
   }
 
-  void scale(double k) override {
+  void scale(const double& k) override {
     r.width *= k;
     r.height *= k;
     pos = point_t(r.pos.x + r.width/2, r.pos.y + r.height/2);

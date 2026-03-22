@@ -1,6 +1,7 @@
 
 #ifndef RECTANGLE_H
 #define RECTANGLE_H
+#include <stdexcept>
 #include "Shape.h"
 
 class Rectangle : public Shape{
@@ -32,9 +33,10 @@ public:
   }
 
   void scale(const double& k) override {
+    if (k <= 0) throw std::logic_error("Cannot scale by negative");
     r.width *= k;
     r.height *= k;
-    pos = point_t(r.pos.x + r.width/2, r.pos.y + r.height/2);
+    r.pos = point_t(r.pos.x - r.width/2, r.pos.y - r.height/2);
   }
 
 };

@@ -1,6 +1,7 @@
 #ifndef CIRCLE_H
 #define CIRCLE_H
 #include <cmath>
+#include <stdexcept>
 #include "Shape.h"
 #include "POD.h"
 
@@ -30,9 +31,8 @@ public:
   }
 
   void scale(const double& k) override {
-    double nr = radius*k;
-    centre = point_t(centre.x + (nr - radius)/sqrt(2), centre.y + (nr - radius)/sqrt(2));
-    radius = nr;
+    if (k <= 0) throw std::logic_error("Cannot scale by negative");
+    radius *= k;
   }
 };
 

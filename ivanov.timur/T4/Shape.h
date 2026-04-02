@@ -4,13 +4,13 @@
 
 class Shape {
 public:
-  virtual double getArea();
-  virtual rectangle_t getFrameRect();
+  virtual double getArea() = 0;
+  virtual rectangle_t getFrameRect() = 0;
 
-  virtual void move(const double& delta_x, const double& delta_y);
-  virtual void move(const point_t& new_point);
+  virtual void move(const double& delta_x, const double& delta_y) = 0;
+  virtual void move(const point_t& new_point) = 0;
 
-  virtual void scale(const point_t& p, const double& k);
+  virtual void scale(const point_t& p, const double& k) = 0;
   ~Shape()=default;
 };
 

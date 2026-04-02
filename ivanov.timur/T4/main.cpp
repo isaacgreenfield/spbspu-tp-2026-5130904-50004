@@ -6,7 +6,7 @@ int main() {
 
   objs.push_back(std::make_shared<Rectangle>(0, 0, 10, 15));
   objs.push_back(std::make_shared<Circle>(5, 5, 20));
-  std::vector<point_t> v = {point_t(5, 5), point_t(7, 7), point_t(9, 9)};
+  std::vector<point_t> v = {point_t(1, 0), point_t(1, 1), point_t(0, 0), point_t(0, 17)};
   objs.push_back(std::make_shared<Polygon>(v));
 
   try {

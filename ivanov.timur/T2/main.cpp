@@ -81,7 +81,7 @@ namespace ivanov {
     if (!in) return in;
     char s1, s2;
     in >> s1 >> s2;
-    if (!in || (s1 != 'l' && s2 != 'l') || (s1 != 'L' && s2 != 'L')) {
+    if (!in || (s1 != 'l' && s2 != 'L') || (s1 != 'L' && s2 != 'l')) {
       in.setstate(std::ios::failbit);
       return in;
     }

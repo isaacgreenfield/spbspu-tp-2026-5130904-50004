@@ -20,8 +20,9 @@ int main() {
   double x, y, k;
   std::cin >> x >> y >> k;
   if (std::cin.fail() || std::cin.eof()) {
-    std::cerr << "Bad input error\n";
-    return 2;
+    x = 1;
+    y = 1;
+    k = 1;
   }
 
   try {

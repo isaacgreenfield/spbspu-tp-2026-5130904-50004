@@ -79,7 +79,44 @@ namespace ivanov {
     return in;
   }
   std::istream operator>>(std::istream& in, PairIO&& dest) {
+    std::istream::sentry sentry(in);
+    if (!sentry) return in;
+    char c;
+    in >> c;
+    if (!in || c != '(') {
+      in.setstate(std::ios::failbit);
+      return in;
+    }
+    std::string token;
+    in >> token;
+    if (!in || token != ":N") {
+      in.setstate(std::ios::failbit);
+      return in;
+    }
 
+    long long n = 0;
+    in >> n;
+    if (!in) return in;
+
+    in >> token;
+    if (!in || token != ":D") {
+      in.setstate(std::ios::failbit);
+      return in;
+    }
+
+    unsigned long long d;
+    in >> d;
+    if (!in) return in;
+
+    in >> token;
+    if (!in || token != ":)") {
+      in.setstate(std::ios::failbit);
+      return in;
+    }
+
+    dest.ref.first = n;
+    dest.ref.second = d;
+    return in;
   }
 }
 

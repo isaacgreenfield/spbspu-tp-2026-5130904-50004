@@ -29,8 +29,8 @@ namespace ivanov {
 
   class IOGuard {
   public:
-    explicit IOGuard(std::basic_ios<char> &s): s_(s), width_(s.width()), fill_(s.fill()), prc_(s.precision()),
-                                               fmt_(s.flags()) {
+    explicit IOGuard(std::basic_ios<char> &s): s_(s), width_(s.width()), prc_(s.precision()),
+                                               fmt_(s.flags()), fill_(s.fill()) {
     }
 
     ~IOGuard() {
@@ -73,7 +73,7 @@ namespace ivanov {
     return in;
   }
 
-  std::istream operator>>(std::istream &in, LongIO &&dest) {
+  std::istream &operator>>(std::istream &in, LongIO &&dest) {
     std::istream::sentry sentry(in);
     if (!sentry) return in;
     long long val;
@@ -89,7 +89,7 @@ namespace ivanov {
     return in;
   }
 
-  std::istream operator>>(std::istream &in, PairIO &&dest) {
+  std::istream &operator>>(std::istream &in, PairIO &&dest) {
     std::istream::sentry sentry(in);
     if (!sentry) return in;
     char c;
@@ -131,7 +131,7 @@ namespace ivanov {
     return in;
   }
 
-  std::istream &operator=(std::istream &in, DataStruct &dest) {
+  std::istream &operator>>(std::istream &in, DataStruct &dest) {
     std::istream::sentry sentry(in);
     if (!sentry) return in;
 
@@ -191,19 +191,20 @@ namespace ivanov {
     return in;
   }
 
-  std::ostream& operator<<(std::ostream& out, const DataStruct& src) {
+  std::ostream &operator<<(std::ostream &out, const DataStruct &src) {
     std::ostream::sentry sentry(out);
     if (!sentry) return out;
 
     IOGuard guard(out);
-    out << "(:key1" << src.key1 << "ll";
-    out << ":key2 (:N" << src.key2.first << ":D" << src.key2.second << ":)";
-    out << ":key3 \"" << src.key2 << "\":)";
+    out << "(:key1 " << src.key1 << "ll"
+        << ":key2 (:N " << src.key2.first << ":D " << src.key2.second << ":)"
+        << ":key3 \"" << src.key3 << "\":)";
     return out;
   }
 }
 
 using namespace ivanov;
+
 int main() {
   std::vector<DataStruct> data;
   std::string line;
@@ -217,7 +218,7 @@ int main() {
     }
   }
 
-  std::sort(data.begin(), data.end(), [](const DataStruct& a, const DataStruct& b) {
+  std::sort(data.begin(), data.end(), [](const DataStruct &a, const DataStruct &b) {
     if (a.key1 != b.key1) return a.key1 < b.key1;
     if (a.key2 != b.key2) return a.key2 < b.key2;
     return a.key3.length() < b.key3.length();

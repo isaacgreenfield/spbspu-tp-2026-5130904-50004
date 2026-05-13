@@ -29,7 +29,7 @@ namespace ivanov {
       s_.width(width_);
       s_.fill(fill_);
       s_.precision(prc_);
-      s_.flags()
+      s_.flags(fmt_);
     }
 
   private:
@@ -39,6 +39,48 @@ namespace ivanov {
     std::basic_ios<char>::fmtflags fmt_;
     char fill_;
   };
+
+  std::istream& operator>>(std::istream& in, DelimiterIO&& dest) {
+    std::istream::sentry sentry(in);
+    if (!sentry) return in;
+    char c = 0;
+    in >> c;
+    if (in && c != dest.exp) in.setstate(std::ios::failbit);
+    return in;
+  }
+  std::istream& operator>>(std::istream& in, StringIO&& dest) {
+    std::istream::sentry sentry(in);
+    if (!sentry) return in;
+    char q;
+    in >> q;
+    if (!in || q != '"') {
+      in.setstate(std::ios::failbit);
+      return in;
+    }
+    std::string str;
+    std::getline(in, str, '"');
+    if (!in) return in;
+    dest.ref = std::move(str);
+    return in;
+  }
+  std::istream operator>>(std::istream& in, LongIO&& dest) {
+    std::istream::sentry sentry(in);
+    if (!sentry) return in;
+    long long val;
+    in >> val;
+    if (!in) return in;
+    char s1, s2;
+    in >> s1 >> s2;
+    if (!in || (s1 != 'l' && s2 != 'l') || (s1 != 'L' && s2 != 'L')) {
+      in.setstate(std::ios::failbit);
+      return in;
+    }
+    dest.ref = val;
+    return in;
+  }
+  std::istream operator>>(std::istream& in, PairIO&& dest) {
+
+  }
 }
 
 int main() {

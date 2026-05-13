@@ -186,6 +186,17 @@ namespace ivanov {
     dest = std::move(input);
     return in;
   }
+
+  std::ostream& operator<<(std::ostream& out, const DataStruct& src) {
+    std::ostream::sentry sentry(out);
+    if (!sentry) return out;
+
+    IOGuard guard(out);
+    out << "(:key1" << src.key1 << "ll";
+    out << ":key2 (:N" << src.key2.first << ":D" << src.key2.second << ":)";
+    out << ":key3 \"" << src.key2 << "\":)";
+    return out;
+  }
 }
 
 int main() {

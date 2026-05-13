@@ -120,9 +120,8 @@ namespace ivanov {
     in >> d;
     if (!in) return in;
 
-    in >> token;
-    if (!in || token != ":)") {
-      in.setstate(std::ios::failbit);
+    if (!(in >> DelimiterIO{':'} >> DelimiterIO{')'}))
+    {
       return in;
     }
 

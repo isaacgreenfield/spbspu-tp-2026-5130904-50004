@@ -14,6 +14,10 @@ inline double addIfVertexCount(double sum, const Polygon& p, size_t target) {
   return sum + (p.getVertexes() == target ? p.getArea() : 0.0);
 }
 
+inline bool isEvenVertexes(const Polygon& p) { return p.getVertexes() % 2 == 0; }
+inline bool isOddVertexes(const Polygon& p) { return p.getVertexes() % 2 != 0; }
+inline bool hasVertexCount(const Polygon& p, size_t n) { return p.getVertexes() == n; }
+
 namespace ivanov{
 
 inline double area(const std::vector<Polygon>& fts, bool isEven) {
@@ -21,11 +25,26 @@ inline double area(const std::vector<Polygon>& fts, bool isEven) {
   return std::accumulate(fts.begin(), fts.end(), 0.0, accumulator);
 }
 
-inline double area(const std::vector<Polygon>& fts, std::string mean) {
-  auto accumulator = std::bind(std::plus<double>(), _1,
+inline double area(const std::vector<Polygon>& fts, const std::string& param) {
+  if (param == "MEAN") {
+    if (fts.empty()) return 0.0;
+    auto accumulator = std::bind(std::plus<double>(), _1,
                                  std::bind(&Polygon::getArea, _2));
-  double sum = std::accumulate(fts.begin(), fts.end(), 0.0, accumulator);
-  return fts.empty() ? 0.0 : sum / fts.size();
+    double sum = std::accumulate(fts.begin(), fts.end(), 0.0, accumulator);
+    return sum / fts.size();
+  } else if (param == "EVEN") {
+    return area(fts, false);
+  } else if (param == "ODD") {
+    return area(fts, true);
+  } else {
+    size_t n;
+    try {
+      n = std::stoull(param);
+    } catch (...) {
+      return 0.0;
+    }
+    return area(fts, n);
+  }
 }
 
 inline double area(const std::vector<Polygon>& fts, size_t vertexes_amn) {
@@ -33,7 +52,55 @@ inline double area(const std::vector<Polygon>& fts, size_t vertexes_amn) {
   return std::accumulate(fts.begin(), fts.end(), 0.0, accumulator);
 }
 
+inline size_t count(const std::vector<Polygon>& fts, size_t num) {
+  return std::count_if(fts.begin(), fts.end(),
+                       std::bind(hasVertexCount, _1, num));
+}
 
+inline double max(const std::vector<Polygon>& fts, const std::string& param) {
+  if (fts.empty()) return 0.0;
+  if (param == "AREA") {
+    auto comp = std::bind(std::less<double>(),
+                          std::bind(&Polygon::getArea, _1),
+                          std::bind(&Polygon::getArea, _2));
+    return std::max_element(fts.begin(), fts.end(), comp)->getArea();
+  } else if (param == "VERTEXES") {
+    auto comp = std::bind(std::less<size_t>(),
+                          std::bind(&Polygon::getVertexes, _1),
+                          std::bind(&Polygon::getVertexes, _2));
+    return static_cast<double>(
+        std::max_element(fts.begin(), fts.end(), comp)->getVertexes());
+  }
+  return 0.0;
+}
+
+inline double min(const std::vector<Polygon>& fts, const std::string& param) {
+  if (fts.empty()) return 0.0;
+  if (param == "AREA") {
+    auto comp = std::bind(std::less<double>(),
+                          std::bind(&Polygon::getArea, _1),
+                          std::bind(&Polygon::getArea, _2));
+    return std::min_element(fts.begin(), fts.end(), comp)->getArea();
+  } else if (param == "VERTEXES") {
+    auto comp = std::bind(std::less<size_t>(),
+                          std::bind(&Polygon::getVertexes, _1),
+                          std::bind(&Polygon::getVertexes, _2));
+    return static_cast<double>(
+        std::min_element(fts.begin(), fts.end(), comp)->getVertexes());
+  }
+  return 0.0;
+}
+
+inline size_t count(const std::vector<Polygon>& fts, const std::string& param) {
+  if (param == "EVEN") {
+    return std::count_if(fts.begin(), fts.end(),
+                         std::bind(isEvenVertexes, _1));
+  } else if (param == "ODD") {
+    return std::count_if(fts.begin(), fts.end(),
+                         std::bind(isOddVertexes, _1));
+  }
+  return 0;
+}
 
 }
 

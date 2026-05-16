@@ -3,13 +3,13 @@
 #include "IO.h"
 #include <sstream>
 
+using namespace ivanov;
 int main(int argc, char *argv[]) {
   if (argc != 2) {
     std::cerr << "Bad input error\n";
     return 1;
   }
 
-  using namespace ivanov;
   std::vector<Polygon> data;
   std::string line;
 

@@ -21,6 +21,9 @@ struct Polygon {
   size_t getVertexes() const {
     return pts.size();
   }
+  std::vector<Point>getPoints() const {
+    return pts;
+  }
 };
 }
 #endif

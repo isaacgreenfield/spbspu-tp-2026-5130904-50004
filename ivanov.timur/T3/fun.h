@@ -18,6 +18,23 @@ inline bool isEvenVertexes(const Polygon& p) { return p.getVertexes() % 2 == 0; 
 inline bool isOddVertexes(const Polygon& p) { return p.getVertexes() % 2 != 0; }
 inline bool hasVertexCount(const Polygon& p, size_t n) { return p.getVertexes() == n; }
 
+inline bool isSamePolygon(const Polygon& a, const Polygon& b) {
+  if (a.getVertexes() != b.getVertexes()) return false;
+
+  const auto& ptsA = a.getPoints();
+  const auto& ptsB = b.getPoints();
+
+  auto dxA = ptsA[0].x, dyA = ptsA[0].y;
+  auto dxB = ptsB[0].x, dyB = ptsB[0].y;
+
+  for (size_t i = 0; i < ptsA.size(); ++i) {
+    if ((ptsA[i].x - dxA) != (ptsB[i].x - dxB) ||
+        (ptsA[i].y - dyA) != (ptsB[i].y - dyB))
+      return false;
+  }
+  return true;
+}
+
 namespace ivanov{
 
 inline double area(const std::vector<Polygon>& fts, bool isEven) {
@@ -100,6 +117,11 @@ inline size_t count(const std::vector<Polygon>& fts, const std::string& param) {
                          std::bind(isOddVertexes, _1));
   }
   return 0;
+}
+
+inline size_t same(const std::vector<Polygon>& fts, const Polygon& target) {
+  return std::count_if(fts.begin(), fts.end(),
+                       std::bind(isSamePolygon, _1, target));
 }
 
 }

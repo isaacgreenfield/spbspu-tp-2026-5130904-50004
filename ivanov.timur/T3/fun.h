@@ -35,6 +35,22 @@ inline bool isSamePolygon(const Polygon& a, const Polygon& b) {
   return true;
 }
 
+inline bool hasRightAngle(const Polygon& p) {
+  const auto& pts = p.getPoints();
+  size_t n = pts.size();
+  if (n < 3) return false;
+  for (size_t i = 0; i < n; ++i) {
+    size_t prev = (i == 0) ? n - 1 : i - 1;
+    size_t next = (i + 1) % n;
+    long long v1x = pts[prev].x - pts[i].x;
+    long long v1y = pts[prev].y - pts[i].y;
+    long long v2x = pts[next].x - pts[i].x;
+    long long v2y = pts[next].y - pts[i].y;
+    if (v1x * v2x + v1y * v2y == 0) return true;
+  }
+  return false;
+}
+
 namespace ivanov{
 
 inline double area(const std::vector<Polygon>& fts, bool isEven) {
@@ -122,6 +138,10 @@ inline size_t count(const std::vector<Polygon>& fts, const std::string& param) {
 inline size_t same(const std::vector<Polygon>& fts, const Polygon& target) {
   return std::count_if(fts.begin(), fts.end(),
                        std::bind(isSamePolygon, _1, target));
+}
+
+inline size_t rightshapes(const std::vector<Polygon>& fts) {
+  return std::count_if(fts.begin(), fts.end(), hasRightAngle);
 }
 
 }

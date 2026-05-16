@@ -4,6 +4,7 @@
 #include "IO.h"
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 
 using namespace ivanov;
 int main(int argc, char *argv[]) {

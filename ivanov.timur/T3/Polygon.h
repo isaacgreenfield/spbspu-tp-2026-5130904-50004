@@ -1,6 +1,7 @@
 #ifndef POLYGON_H
 #define POLYGON_H
 #include <vector>
+#include <cstddef>
 #include "Point.h"
 
 using namespace ivanov;

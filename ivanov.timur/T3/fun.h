@@ -4,6 +4,7 @@
 #include "IO.h"
 #include <numeric>
 #include <functional>
+#include <algorithm>
 using namespace std::placeholders;
 
 inline double addIfParity(double sum, const Polygon& p, bool isEven) {

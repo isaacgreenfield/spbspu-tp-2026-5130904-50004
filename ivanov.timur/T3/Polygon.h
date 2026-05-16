@@ -8,7 +8,7 @@ namespace ivanov {
 struct Polygon {
   std::vector<Point> pts;
 
-  Polygon(const std::vector<Point>& cpts): pts(cpts) {}
+  Polygon(): pts({}) {}
   ~Polygon() = default;
 
   double getArea() const {

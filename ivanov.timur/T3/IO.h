@@ -78,7 +78,7 @@ inline std::istream& operator>>(std::istream& in, Polygon& dest) {
     points.push_back(p);
   }
 
-  dest.points = std::move(points);
+  dest.pts = std::move(points);
   return in;
 }
 

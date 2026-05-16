@@ -81,7 +81,7 @@ namespace ivanov {
     if (!in) return in;
     char s1, s2;
     in >> s1 >> s2;
-    if (!in || (s1 != 'l' && s2 != 'L') || (s1 != 'L' && s2 != 'l')) {
+    if (!in || (s1 != 'l' && s1 != 'L') || (s2 != 'L' && s2 != 'l')) {
       in.setstate(std::ios::failbit);
       return in;
     }
@@ -148,6 +148,11 @@ namespace ivanov {
         break;
       }
       if (!(in >> DelimiterIO{':'})) break;
+
+      if (in.peek() == ')') {
+        in.get();
+        break;
+      }
 
       std::string key;
       if (!(in >> key)) break;
